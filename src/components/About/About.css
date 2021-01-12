@@ -69,6 +69,10 @@
     width: 272px;
     height: 272px;
   }
+  .about__text-container {
+    margin: 0 auto 0 0;
+    width: 100%;
+  }
   .about__title {
     font: 400 30px/40px 'Roboto';
     margin: 24px 0 0;

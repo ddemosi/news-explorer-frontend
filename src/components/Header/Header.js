@@ -10,6 +10,7 @@ const Header = (props) => {
 
   function togglePopup() {
     props.togglePopup(true);
+    props.toggleFormPopup(true);
     toggleNav(false);
   }
 
@@ -19,7 +20,7 @@ const Header = (props) => {
   }
 
   function toggleNavStatus() {
-    if (props.isPopupOpen) {
+    if (props.isFormPopupOpen) {
       toggleNav(false);
       props.togglePopup(false);
     } else {
@@ -41,7 +42,7 @@ const Header = (props) => {
       <div className='header__size'>
         <p className={`header__logo ${navigationLinkColors('header__logo_dark')} `}>NewsExplorer</p>
 
-        <button onClick={toggleNavStatus} className={`header__icon ${isNavOpen ? 'header__icon_active' : ''} ${props.isPopupOpen ? 'header__icon_active' : ''} ${navigationLinkColors('header__icon_dark')}`}></button>
+        <button onClick={toggleNavStatus} className={`header__icon ${isNavOpen ? 'header__icon_active' : ''} ${props.isFormPopupOpen ? 'header__icon_active' : ''} ${navigationLinkColors('header__icon_dark')}`}></button>
         <div className={`header__mobile-nav ${isNavOpen ? 'header__mobile-nav_visible' : ''}`}>
           <Navigation
             isLoggedIn={props.isLoggedIn}

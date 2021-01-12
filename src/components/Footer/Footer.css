@@ -97,6 +97,9 @@
 }
 
 @media screen and (max-width: 430px) {
+  .footer {
+    padding-top: 20px;
+  }
   .footer__navlink-container {
     flex-direction: column;
     height: 60px;

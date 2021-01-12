@@ -180,9 +180,19 @@
   font-size: 16px;
   line-height: 22px;
   margin: 16px 0 0;
+  position: relative;
+  max-height: 110px;
   overflow: hidden;
-  white-space: nowrap;
-  text-overflow: ellipsis;
+}
+
+.news-card__snippet::after {
+  content: '';
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  width: 100%;
+  height: 20%;
+  background: linear-gradient(to bottom, rgba(255, 255, 255, 0), rgba(255, 255, 255, 1) 100%);
 }
 
 .news-card__source {
@@ -211,6 +221,10 @@
 
   .news-card__title {
     font: 400 22px/24px 'Roboto Slab';
+  }
+
+  .news-card__snippet {
+
   }
 
   .news-card__delete-button:hover .news-card__save-button-label {
