@@ -11,6 +11,7 @@ import PopupWithForm from '../PopupWithForm/PopupWithForm';
 import Popup from '../Popup/Popup';
 
 
+
 const App = () => {
   const [currentUser, setCurrentUser] = useState({})
   const [isLoggedIn, toggleLoggedIn] = useState(false);
@@ -116,7 +117,6 @@ const App = () => {
 
           </Popup>
           : ""}
-
 
         </div>
       </div>

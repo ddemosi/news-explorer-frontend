@@ -32,17 +32,25 @@ const NewsCard = (props) => {
     }
   }
 
+  function formatDate() {
+    return props.date.split("T")[0];
+  }
+
   return (
     <li className="news-card">
-      {deleteOrSave()}
-      {keywords()}
-      <div className="news-card__image"></div>
-      <div className="news-card__info-container">
-        <p className="news-card__date">Test</p>
-        <h3 className="news-card__title">Test</h3>
-        <p className="news-card__snippet">Ever since I read Richard Louv's influential book, "Last Child in the Woods," the idea of having a special "sit spot" has stuck with me. This advice, which Louv attributes to nature educator Jon Young, is for both adults and children to find...</p>
-        <p className="news-card__source">Test</p>
-      </div>
+      <a className="news-card__anchor" href={props.url} target="_blank" rel="noopener noreferrer">
+        {deleteOrSave()}
+        {keywords()}
+        <div className="news-card__image" style={{
+          backgroundImage: `url(${props.image})`
+        }}></div>
+        <div className="news-card__info-container">
+          <p className="news-card__date">{formatDate()}</p>
+          <h3 className="news-card__title">{props.title}</h3>
+          <p className="news-card__snippet">{props.description}</p>
+          <p className="news-card__source">{props.source}</p>
+        </div>
+      </a>
     </li>
   );
 }
