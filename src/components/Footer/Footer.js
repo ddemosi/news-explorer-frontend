@@ -15,8 +15,8 @@ const Footer = () => {
             <a href="https://practicum.yandex.com/" className="footer__navlink">Practicum by Yandex</a>
           </div>
           <div className="footer__nav-icon-container">
-            <a href="https://www.facebook.com/YPracticum/" className="footer__nav-icon footer__nav-icon_github"><img alt="Github logo" src={github}></img></a>
-            <a href="https://github.com/ddemosi/news-explorer-frontend" className="footer__nav-icon footer__nav-icon_facebook"><img alt="Facebook logo" src={facebook}></img></a>
+            <a href="https://github.com/ddemosi/news-explorer-frontend" target="_blank" rel="noopener noreferrer" className="footer__nav-icon footer__nav-icon_github"><img alt="Github logo" src={github}></img></a>
+            <a href="https://www.facebook.com/YPracticum/" target="_blank" rel="noopener noreferrer" className="footer__nav-icon footer__nav-icon_facebook"><img alt="Facebook logo" src={facebook}></img></a>
           </div>
         </nav>
       </div>

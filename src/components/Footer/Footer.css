@@ -5,6 +5,7 @@
 
 .footer__width {
   width: calc(100% - 104px * 2);
+  max-width: 1440px;
   margin: 0 auto;
   display: flex;
   align-items: center;
@@ -64,7 +65,7 @@
   opacity: .8;
 }
 
-@media screen and (max-width: 1000px) {
+@media screen and (max-width: 1050px) {
   .footer__width {
     width: calc(100% - 40px * 2);
   }
@@ -86,6 +87,9 @@
   .footer__navlink-container {
     margin: 0 auto 0 0;
     display: flex;
+  }
+  .footer__navlink:first-child {
+    margin-left: 0;
   }
   .footer__nav-icon-container {
     margin: 0 0 0 auto;

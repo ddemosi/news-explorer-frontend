@@ -7,6 +7,7 @@
 
 .saved-news-header__width {
   width: calc(100% - 104px * 2);
+  max-width: 1440px;
   display: flex;
   flex-direction: column;
   margin: 0 auto;

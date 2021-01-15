@@ -1,5 +1,4 @@
 import React, { useState, useRef } from 'react';
-import { unstable_renderSubtreeIntoContainer } from 'react-dom';
 import validator from 'validator';
 
 const PopupWithForm = (props) => {
@@ -27,7 +26,6 @@ const PopupWithForm = (props) => {
     e.preventDefault()
     emailRef.current.value = "";
     passwordRef.current.value = "";
-    props.toggleFormPopup(false);
     props.toggleLoggedIn(true);
     closePopup();
   }
@@ -82,6 +80,7 @@ const PopupWithForm = (props) => {
 
   function closePopup() {
     props.togglePopup(false);
+    props.toggleFormPopup(false);
   }
 
   function toggleRegisterPopup() {

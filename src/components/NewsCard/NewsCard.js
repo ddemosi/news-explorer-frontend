@@ -1,6 +1,8 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 const NewsCard = (props) => {
+
+  const [isSaved, toggleIsSaved] = useState(false);
 
   function deleteOrSave() {
     if (props.isSavedNewsRoute && props.isLoggedIn) {
@@ -11,7 +13,7 @@ const NewsCard = (props) => {
       )
     } else if (!props.isSavedNewsRoute && props.isLoggedIn) {
       return (
-        <button className="news-card__save-button"></button>
+        <button className={`news-card__save-button ${isSaved ? 'news-card__save-button_active' : ''}`} onClick={() => toggleIsSaved(!isSaved)}></button>
       )
     } else {
       return (

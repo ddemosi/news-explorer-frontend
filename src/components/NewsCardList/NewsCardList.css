@@ -3,11 +3,11 @@
   width: 100%;
   margin: 0;
   padding: 80px 0;
-
 }
 
 .news-card-list__width {
   width: calc(100% - 104px * 2);
+  max-width: 1440px;
   margin: 0 auto;
   padding: 0;
   display: flex;
@@ -48,6 +48,10 @@
   outline: none;
 }
 
+.news-card-list__show-more:hover {
+  opacity: .9;
+}
+
 @media screen and (max-width: 1400px) {
   .news-card-list__container {
     grid-template-columns: 1fr 1fr;
@@ -78,5 +82,9 @@
   .news-card-list__width {
     width: calc(100% - 16px * 2);
     align-items: center;
+  }
+  .news-card-list__title {
+    font: 400 30px/34px 'Roboto Slab';
+    margin-right: auto;
   }
 }
