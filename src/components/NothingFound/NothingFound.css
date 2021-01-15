@@ -1,0 +1,19 @@
+.nothing-found__container {
+  width: 100%;
+  min-height: 240px;
+  background-color:  #F5F6F7;
+  display: flex;
+}
+
+.nothing-found__title {
+  color: #1a1b22;
+  font: 400 40px/46px 'Roboto Slab';
+  align-items: center;
+  margin: 0 auto;
+}
+
+@media screen and (max-width: 525px) {
+  .nothing-found__title {
+    font: 400 30px/34px 'Roboto Slab';
+  }
+}

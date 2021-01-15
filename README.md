@@ -11,7 +11,7 @@ A few notes:
 Draft 2!
 
 * Miscellaneous markup fixes, including navigation bar spacing, mobile menu changes, etc
-* Forgot to add preloader. Preloader can now be viewed by clicking the "Search" button. There is currently a 3 second timeout trigger.
+* Forgot to add preloader. Preloader and Nothing Found blocks can now be viewed by clicking the "Search" button. There is currently a 3 second timeout trigger.
 * Fixed popup opening/closing issues when using the navbar. 
 * Inputs now highlight when in focus.
 * Fixed button interactive styles.

@@ -4,6 +4,7 @@ import SearchForm from '../SearchForm/SearchForm';
 import About from '../About/About';
 import NewsCardList from '../NewsCardList/NewsCardList';
 import Preloader from '../Preloader/Preloader';
+import NothingFound from '../NothingFound/NothingFound';
 
 const Main = (props) => {
 
@@ -16,7 +17,10 @@ const [isLoading, toggleIsLoading] = useState(false);
       />
 
       {isLoading
-        ? <Preloader></Preloader>
+        ? <div>
+          <Preloader/>
+          <NothingFound/>
+        </div>
         : <NewsCardList
         isSavedNewsRoute={false}
         isLoggedIn={props.isLoggedIn}
