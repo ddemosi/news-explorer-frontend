@@ -162,14 +162,14 @@
 }
 
 .news-card__date {
-  font-family: 'Roboto Slab';
-  font-weight: 400;
+  font-family: 'Source Sans Pro';
   font-size: 18px;
   line-height: 24px;
   margin: 20px 0 0;
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
+  color: #b6bcbf;
 }
 
 .news-card__title {
@@ -205,6 +205,7 @@
 }
 
 .news-card__source {
+  color: #b6bcbf;
   font-family: 'Roboto Slab';
   font-weight: 700;
   font-size: 16px;
@@ -230,10 +231,6 @@
 
   .news-card__title {
     font: 400 22px/24px 'Roboto Slab';
-  }
-
-  .news-card__snippet {
-
   }
 
   .news-card__delete-button:hover .news-card__save-button-label {

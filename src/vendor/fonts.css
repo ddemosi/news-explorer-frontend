@@ -42,7 +42,7 @@
   font-family: "Roboto";
   src: url('../fonts/roboto-900.woff2') format('woff2'),
       url('../fonts/roboto-900.woff') format('woff');
-  font-weight: 500;
+  font-weight: 900;
   font-display: fallback;
 }
 
@@ -58,6 +58,12 @@
   font-family: "Roboto Slab";
   src: url('../fonts/roboto-slab-700.woff2') format('woff2'),
       url('../fonts/roboto-slab-700.woff') format('woff');
-  font-weight: 400;
+  font-weight: 700;
   font-display: fallback;
+}
+
+@font-face {
+  font-family: 'Source Sans Pro';
+  src: url('../fonts/source-sans-pro-regular.woff2'),
+       url('../fonts/source-sans-pro-regular.woff');
 }

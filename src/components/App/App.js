@@ -44,6 +44,7 @@ const App = () => {
                   toggleLoggedIn={toggleLoggedIn}
                   isPopupOpen={isPopupOpen}
                   isFormPopupOpen={isFormPopupOpen}
+                  toggleIsRegisterPopup={toggleIsRegisterPopup}
                   togglePopup={togglePopup}
                   toggleFormPopup={toggleFormPopup}
                   isSavedNewsRoute={false}
@@ -61,6 +62,7 @@ const App = () => {
                   isSavedNewsRoute={true}
                   isPopupOpen={isPopupOpen}
                   isFormPopupOpen={isFormPopupOpen}
+                  toggleIsRegisterPopup={toggleIsRegisterPopup}
                   toggleFormPopup={toggleFormPopup}
                   togglePopup={togglePopup}
                   toggleLoggedIn={toggleLoggedIn}
@@ -80,6 +82,7 @@ const App = () => {
           {isFormPopupOpen
             ? <Popup
               togglePopup={togglePopup}
+              toggleFormPopup={toggleFormPopup}
               isPopupOpen={isPopupOpen}
             >
               <PopupWithForm
@@ -101,6 +104,7 @@ const App = () => {
             ? <Popup
             isPopupOpen={isPopupOpen}
             togglePopup={togglePopup}
+            toggleFormPopup={toggleFormPopup}
           >
             {isRegisterSuccess
             ?
