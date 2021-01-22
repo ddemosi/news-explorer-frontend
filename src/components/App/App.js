@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 
 import { CurrentUserContext } from '../../contexts/CurrentUserContext'
@@ -6,9 +6,11 @@ import Header from '../Header/Header';
 import Footer from '../Footer/Footer';
 import Main from '../Main/Main';
 import SavedNews from '../SavedNews/SavedNews';
-import SavedNewsHeader from '../SavedNewsHeader/SavedNewsHeader';
 import PopupWithForm from '../PopupWithForm/PopupWithForm';
 import Popup from '../Popup/Popup';
+
+import api from '../../utils/MainApi';
+import ProtectedRoute from '../ProtectedRoute/ProtectedRoute';
 
 
 
@@ -20,6 +22,8 @@ const App = () => {
   const [isFormPopupOpen, toggleFormPopup] = useState(false);
   const [isRegisterSuccessPopupOpen, toggleRegisterSuccessPopup] = useState(false);
   const [isRegisterSuccess, toggleRegisterSuccess] = useState(false);
+  const [isLoading, toggleIsLoading] = useState(false);
+
 
   function registrationSuccessToSignin() {
     toggleIsRegisterPopup(false);
@@ -31,6 +35,21 @@ const App = () => {
     toggleRegisterSuccessPopup(false);
     toggleFormPopup(true);
   }
+
+  useEffect(() => {
+
+    api.getUserInfo()
+      .then((res) => {
+        if (res) {
+          setCurrentUser(res)
+          toggleLoggedIn(true);
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+        return
+      })
+  }, [])
 
   return (
     <CurrentUserContext.Provider value={currentUser}>
@@ -52,10 +71,13 @@ const App = () => {
 
                 <Main
                   isLoggedIn={isLoggedIn}
+                  isLoading={isLoading}
+                  toggleIsLoading={toggleIsLoading}
                 />
 
                 <Footer />
               </Route>
+
               <Route exact path="/saved-news">
                 <Header
                   isLoggedIn={isLoggedIn}
@@ -68,10 +90,11 @@ const App = () => {
                   toggleLoggedIn={toggleLoggedIn}
                 />
 
-                <SavedNewsHeader />
-
-                <SavedNews
+                <ProtectedRoute
+                  component={SavedNews}
                   isLoggedIn={isLoggedIn}
+                  isLoading={isLoading}
+                  toggleIsLoading={toggleIsLoading}
                 />
 
                 <Footer />
@@ -96,31 +119,32 @@ const App = () => {
                 toggleLoggedIn={toggleLoggedIn}
                 isRegisterSuccess={isRegisterSuccess}
                 toggleRegisterSuccess={toggleRegisterSuccess}
+                setCurrentUser={setCurrentUser}
               />
             </Popup>
             : ""}
 
           {isRegisterSuccessPopupOpen
             ? <Popup
-            isPopupOpen={isPopupOpen}
-            togglePopup={togglePopup}
-            toggleFormPopup={toggleFormPopup}
-          >
-            {isRegisterSuccess
-            ?
-              <>
-              <h2 className="popup__title">Registration completed successfully!</h2>
-              <button className="popup__swap-form-text popup__swap-form-button" onClick={registrationSuccessToSignin}>Sign in</button>
-              </>
-            :
-              <>
-              <h2 className="popup__title">Oops! Something went wrong</h2>
-              <button className="popup__swap-form-text popup__swap-form-button" onClick={registrationFailRedirect}>Try again</button>
-              </>
-          }
+              isPopupOpen={isPopupOpen}
+              togglePopup={togglePopup}
+              toggleFormPopup={toggleFormPopup}
+            >
+              {isRegisterSuccess
+                ?
+                <>
+                  <h2 className="popup__title">Registration completed successfully!</h2>
+                  <button className="popup__swap-form-text popup__swap-form-button" onClick={registrationSuccessToSignin}>Sign in</button>
+                </>
+                :
+                <>
+                  <h2 className="popup__title">Oops! Something went wrong</h2>
+                  <button className="popup__swap-form-text popup__swap-form-button" onClick={registrationFailRedirect}>Try again</button>
+                </>
+              }
 
-          </Popup>
-          : ""}
+            </Popup>
+            : ""}
 
         </div>
       </div>

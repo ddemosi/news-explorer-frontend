@@ -1,14 +1,16 @@
 const main = {
   url: 'http://localhost:3000',
-  auth: {
-    "Content-Type": "application/json"
-  }
+  headers: {
+    "Content-Type": "application/json",
+  },
+  credentialPreference: 'include',
 }
 
 class Api {
-  constructor({ url, auth }) {
+  constructor({ url, headers, credentialPreference }) {
     this._url = url;
-    this._auth = auth;
+    this._headers = headers;
+    this._credential = credentialPreference;
   }
 
   // Private functions
@@ -22,7 +24,8 @@ class Api {
   register(email, password, name) {
     return fetch(`${this._url}/signup`, {
       method: "POST",
-      headers: this._auth,
+      credentials: this._credential,
+      headers: this._headers,
       body: JSON.stringify({ email, password, name })
     })
       .then((res) => {
@@ -33,7 +36,8 @@ class Api {
   signin(email, password) {
     return fetch(`${this._url}/signin`, {
       method: "POST",
-      headers: this._auth,
+      credentials: this._credential,
+      headers: this._headers,
       body: JSON.stringify({ email, password })
     })
       .then((res) => {
@@ -41,13 +45,10 @@ class Api {
       })
   }
 
-  checkToken(jwt) {
-    return fetch(`${this._apiEndpoint}/users/me`, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        "Authorization": `Bearer ${jwt}`,
-      },
+  signout() {
+    return fetch(`${this._url}/users/logout`, {
+      credentials: this._credential,
+      headers: this._headers,
     })
       .then((res) => {
         return this._checkResponse(res);
@@ -56,7 +57,8 @@ class Api {
 
   getUserInfo() {
     return fetch(`${this._url}/users/me`, {
-      headers: this._auth,
+      credentials: this._credential,
+      headers: this._headers,
     })
       .then((res => {
         return this._checkResponse(res);
@@ -67,7 +69,8 @@ class Api {
 
   getArticles() {
     return fetch(`${this._url}/articles`, {
-      headers: this._auth,
+      credentials: this._credential,
+      headers: this._headers,
     })
       .then((res) => {
         return this._checkResponse(res);
@@ -76,8 +79,9 @@ class Api {
 
   addArticle(article) {
     return fetch(`${this._url}/articles`, {
+      credentials: this._credential,
       method: "POST",
-      headers: this._auth,
+      headers: this._headers,
       body: JSON.stringify(article),
     })
       .then((res) => {
@@ -87,8 +91,9 @@ class Api {
 
   deleteArticle(articleId) {
     return fetch(`${this._url}/articles/${articleId}`, {
+      credentials: this._credential,
       method: "DELETE",
-      headers: this._auth,
+      headers: this._headers,
     })
       .then((res) => {
         return this._checkResponse(res);

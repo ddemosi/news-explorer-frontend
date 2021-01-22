@@ -2,6 +2,8 @@ import React, { useContext, useState } from 'react';
 import { CurrentUserContext } from '../../contexts/CurrentUserContext';
 import Navigation from '../Navigation/Navigation';
 
+import api from '../../utils/MainApi';
+
 const Header = (props) => {
 
   const [isNavOpen, toggleNav] = useState(false);
@@ -16,8 +18,17 @@ const Header = (props) => {
   }
 
   function handleSignout() {
-    props.toggleLoggedIn(false);
-    toggleNav(false);
+
+    api.signout()
+      .then(() => {
+        props.toggleLoggedIn(false);
+        toggleNav(false);
+        localStorage.removeItem('articles');
+      })
+      .catch((err) => {
+        console.log(err);
+      })
+
   }
 
   function toggleNavStatus() {
@@ -56,7 +67,7 @@ const Header = (props) => {
           {props.isLoggedIn
             ? <button
               onClick={handleSignout}
-              className={`header__signout ${navigationLinkColors('header__signout_dark')}`}>{`${isNavOpen ? 'Sign out' : currentUser.name = 'Danny'}`}</button>
+              className={`header__signout ${navigationLinkColors('header__signout_dark')}`}>{`${isNavOpen ? 'Sign out' : currentUser.name}`}</button>
             : <button
               onClick={togglePopup}
               className={`header__signin ${navigationLinkColors('header__signin_dark')}`}>Sign in</button>}

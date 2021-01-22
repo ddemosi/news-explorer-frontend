@@ -1,12 +1,48 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 import NewsCard from '../NewsCard/NewsCard';
+import NothingFound from '../NothingFound/NothingFound';
 
 const NewsCardList = (props) => {
+  const [hideButton, toggleButton] = useState(false);
 
   function incrementVisibleCards() {
-    const newVisibleCards = props.visibleCards + 3;
-    props.setVisibleCards(newVisibleCards);
+    if (props.visibleCards > 100) {
+      toggleButton(true);
+      return
+    } else {
+      const newVisibleCards = props.visibleCards + 3;
+      props.setVisibleCards(newVisibleCards);
+    }
+
+  }
+
+  function renderCardList() {
+    if (props.cards.length === 0) {
+      return <NothingFound error={false} />
+    } else if (props.cards) {
+      return props.cards.slice(0, props.visibleCards).map((card) => {
+
+        return <NewsCard
+          key={card.url}
+          _id={card._id}
+          keyword={card.keyword}
+          date={card.publishedAt}
+          title={card.title}
+          description={card.description}
+          source={card.source.name}
+          url={card.url}
+          image={card.urlToImage}
+          isSaved={card.isSaved}
+          isSavedNewsRoute={props.isSavedNewsRoute}
+          isLoggedIn={props.isLoggedIn}
+          deleteCard={props.deleteCard}
+          saveArticle={props.saveArticle}
+        />
+      });
+    } else {
+      return <NothingFound error={true} />
+    }
   }
 
   return (
@@ -19,27 +55,14 @@ const NewsCardList = (props) => {
             </h2>
           : ""
         }
-
         <ul className="news-card-list__container">
           {
-            props.cards.slice(0, props.visibleCards).map((card) => {
-              return <NewsCard
-                key={card.id}
-                date={card.publishedAt}
-                title={card.title}
-                description={card.description}
-                source={card.source.name}
-                url={card.url}
-                image={card.urlToImage}
-                isSavedNewsRoute={props.isSavedNewsRoute}
-                isLoggedIn={props.isLoggedIn}
-                />
-            })
+            renderCardList()
           }
-
         </ul>
 
-        {!props.isSavedRoute ? <button onClick={incrementVisibleCards} className="news-card-list__show-more">Show more</button> : ''}
+
+        {!props.isSavedNewsRoute && !hideButton ? <button onClick={incrementVisibleCards} className="news-card-list__show-more">Show more</button> : ''}
 
       </div>
     </section>
