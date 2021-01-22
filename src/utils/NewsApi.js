@@ -9,15 +9,17 @@ const newsApiEndpoints = {
   auth: {
     Authorization: apiKey,
   },
-  pageSize
+  pageSize,
+  apiKey,
 }
 
 class NewsApi {
-  constructor({ url, endpoint, auth, pageSize }) {
+  constructor({ url, endpoint, auth, pageSize, apiKey }) {
     this._url = url;
     this._endpoint = endpoint;
     this._auth = auth;
-    this._pageSize = pageSize
+    this._pageSize = pageSize;
+    this._apiKey = apiKey
   }
 
   _checkResponse(res) {
@@ -25,7 +27,7 @@ class NewsApi {
   }
 
   search(keyword) {
-    return fetch(`${this._url}${this._endpoint}?q=${keyword}&from=${new Date(Date.now() - 604800000)}&to=${new Date(Date.now)}&pageSize=${pageSize}`, {
+    return fetch(`${this._url}${this._endpoint}?q=${keyword}&from=${new Date(Date.now() - 604800000)}&to=${new Date(Date.now())}&pageSize=${pageSize}&apiKey=${apiKey}`, {
       headers: this._auth
     })
       .then((res) => {
