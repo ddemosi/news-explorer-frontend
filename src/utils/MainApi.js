@@ -1,5 +1,5 @@
 const main = {
-  url: 'http://localhost:3000',
+  url: 'http://api.danny-news-explorer.students.nomoreparties.site',
   headers: {
     "Content-Type": "application/json",
   },

@@ -1,5 +1,5 @@
 const apiKey = "0faa4eab3d374a6d99b353e5310a09b0";
-const url = "http://newsapi.org/v2";
+const url = "https://nomoreparties.co/news/v2";
 const endpoint = "/everything";
 const pageSize = 100;
 
