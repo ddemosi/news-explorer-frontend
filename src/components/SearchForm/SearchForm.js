@@ -75,6 +75,42 @@ const SearchForm = (props) => {
     if (searchRef.current.value.length > 0) {
       // set loading icon
       props.toggleIsLoading(true);
+
+      // if user is not logged in, ignore sorting function, but still assign keywords
+      if (!props.isLoggedIn) {
+
+        newsApi.search(searchRef.current.value)
+          .then((res) => {
+            // loop through articles and assign keyword
+            let newArticles = [];
+            res.articles.forEach((article) => {
+              article.keyword = searchRef.current.value;
+              newArticles.push(article);
+            });
+            return newArticles;
+          })
+          .then((articles) => {
+            if (articles) {
+              props.setVisibleCards(3);
+              props.setCards(articles);
+              return
+            } else {
+              props.toggleIsLoading(false);
+              throw new Error('Unhandled request error')
+            }
+          })
+          .then(() => {
+            props.toggleIsLoading(false);
+          })
+          .catch((err) => {
+            console.log(err);
+          })
+          return
+      }
+
+      // if user is logged in, assign keyword and sort cards
+
+
       // elevated scope to avoid crashing when data isn't returned fast enough
       let savedCards
 

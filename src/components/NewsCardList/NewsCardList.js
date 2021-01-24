@@ -38,6 +38,7 @@ const NewsCardList = (props) => {
           isLoggedIn={props.isLoggedIn}
           deleteCard={props.deleteCard}
           saveArticle={props.saveArticle}
+
         />
       });
     } else {

@@ -11,19 +11,21 @@ import Popup from '../Popup/Popup';
 
 import api from '../../utils/MainApi';
 import ProtectedRoute from '../ProtectedRoute/ProtectedRoute';
+import Preloader from '../Preloader/Preloader';
+import NothingFound from '../NothingFound/NothingFound';
 
 
 
 const App = () => {
   const [currentUser, setCurrentUser] = useState({})
-  const [isLoggedIn, toggleLoggedIn] = useState(false);
+  const [isLoggedIn, toggleLoggedIn] = useState(null);
   const [isRegisterPopup, toggleIsRegisterPopup] = useState(false);
   const [isPopupOpen, togglePopup] = useState(false);
   const [isFormPopupOpen, toggleFormPopup] = useState(false);
   const [isRegisterSuccessPopupOpen, toggleRegisterSuccessPopup] = useState(false);
   const [isRegisterSuccess, toggleRegisterSuccess] = useState(false);
   const [isLoading, toggleIsLoading] = useState(false);
-
+  const [serverError, toggleServerError] = useState(null);
 
   function registrationSuccessToSignin() {
     toggleIsRegisterPopup(false);
@@ -36,25 +38,25 @@ const App = () => {
     toggleFormPopup(true);
   }
 
-  useEffect(() => {
+  function checkIsLoggedInBeforeRender() {
+    if (isLoggedIn === null && serverError === null) {
+      return (
 
-    api.getUserInfo()
-      .then((res) => {
-        if (res) {
-          setCurrentUser(res)
-          toggleLoggedIn(true);
-        }
-      })
-      .catch((err) => {
-        console.log(err);
-        return
-      })
-  }, [])
+        <Preloader/>
 
-  return (
-    <CurrentUserContext.Provider value={currentUser}>
+      )
+    } else if (serverError) {
+      return (
+
+        <NothingFound error={true}/>
+
+      )
+    } else {
+      return (
+        <CurrentUserContext.Provider value={currentUser}>
       <div className='app'>
         <div className='page'>
+
           <Router>
             <Switch>
               <Route exact path='/'>
@@ -73,6 +75,10 @@ const App = () => {
                   isLoggedIn={isLoggedIn}
                   isLoading={isLoading}
                   toggleIsLoading={toggleIsLoading}
+                  isPopupOpen={isPopupOpen}
+                  isFormPopupOpen={isFormPopupOpen}
+                  togglePopup={togglePopup}
+                  toggleFormPopup={toggleFormPopup}
                 />
 
                 <Footer />
@@ -95,6 +101,8 @@ const App = () => {
                   isLoggedIn={isLoggedIn}
                   isLoading={isLoading}
                   toggleIsLoading={toggleIsLoading}
+                  toggleFormPopup={toggleFormPopup}
+                  togglePopup={togglePopup}
                 />
 
                 <Footer />
@@ -149,7 +157,36 @@ const App = () => {
         </div>
       </div>
     </CurrentUserContext.Provider>
-  );
+      )
+    }
+  }
+
+  useEffect(() => {
+
+    api.getUserInfo()
+      .then((res) => {
+        if (res) {
+          setCurrentUser(res);
+          toggleLoggedIn(true);
+          toggleServerError(false);
+          return
+        }
+
+      })
+      .catch((err) => {
+        if (err === 'Error: 401') {
+          toggleLoggedIn(false);
+          toggleServerError(false);
+        } else {
+          toggleServerError(true);
+          console.log(err);
+          return
+        }
+
+      })
+  }, [])
+
+  return checkIsLoggedInBeforeRender();
 }
 
 export default App;

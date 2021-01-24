@@ -25,13 +25,15 @@ const NewsCard = (props) => {
     props.deleteCard(props._id);
   };
 
-  function handleArticleSave() {
+  async function handleArticleSave() {
     // prevent action if article is already saved
     if (isSaved) {
       return
     } else {
+
       // send article up to Main component to be handled
-      props.saveArticle({
+
+      if(await props.saveArticle({
         keyword: props.keyword,
         title: props.title,
         text: props.description,
@@ -40,9 +42,15 @@ const NewsCard = (props) => {
         link: props.url,
         image: props.image,
       })
-
-      toggleIsSaved(true);
-      return;
+      ) {
+        // if saveArticle returns true
+        toggleIsSaved(true);
+        return
+      } else {
+        toggleIsSaved(false);
+        //otherwise do nothing
+        return;
+      }
     }
   };
 
@@ -71,7 +79,7 @@ const NewsCard = (props) => {
       )
     } else {
       return (
-        <button className="news-card__save-button">
+        <button onClick={(e) => { e.stopPropagation(); handleArticleSave() }} className="news-card__save-button">
           <span className="news-card__save-button-label"><p>Sign in to save articles</p></span>
         </button>
       )

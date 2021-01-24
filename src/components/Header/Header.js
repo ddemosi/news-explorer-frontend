@@ -1,21 +1,32 @@
-import React, { useContext, useState } from 'react';
-import { CurrentUserContext } from '../../contexts/CurrentUserContext';
-import Navigation from '../Navigation/Navigation';
+import React, { useCallback, useContext, useEffect, useState } from 'react';
+import { useLocation } from 'react-router-dom';
 
+import { CurrentUserContext } from '../../contexts/CurrentUserContext';
+import { useComponentWillMount } from '../../utils/useComponentWillMount';
 import api from '../../utils/MainApi';
 
+import Navigation from '../Navigation/Navigation';
+
 const Header = (props) => {
+
+  // state and context declarations
+
+  const { togglePopup, toggleFormPopup, toggleIsRegisterPopup } = props;
 
   const [isNavOpen, toggleNav] = useState(false);
 
   const currentUser = useContext(CurrentUserContext);
 
-  function togglePopup() {
-    props.togglePopup(true);
-    props.toggleFormPopup(true);
-    props.toggleIsRegisterPopup(false);
+  const location = useLocation();
+
+  // handlers
+
+  const handlePopup = useCallback(() => {
+    togglePopup(true);
+    toggleFormPopup(true);
+    toggleIsRegisterPopup(false);
     toggleNav(false);
-  }
+  }, [togglePopup, toggleFormPopup, toggleIsRegisterPopup, toggleNav])
 
   function handleSignout() {
 
@@ -34,8 +45,8 @@ const Header = (props) => {
   function toggleNavStatus() {
     if (props.isFormPopupOpen) {
       toggleNav(false);
-      props.togglePopup(false);
-      props.toggleFormPopup(false);
+      togglePopup(false);
+      toggleFormPopup(false);
     } else {
       toggleNav(!isNavOpen);
     }
@@ -50,6 +61,25 @@ const Header = (props) => {
       return '';
     }
   }
+
+
+  // custom hook to remove popup trigger on refresh
+  useComponentWillMount(() => {
+    location.state = null;
+    return
+  })
+
+  // effect to handle redirect from /saved-news if not logged in
+  useEffect(() => {
+    if (location.state === null || location.state === undefined) {
+      return
+    } else if (location.state.redirected){
+      handlePopup();
+      return
+    }
+    return
+  }, [location.state, handlePopup]);
+
   return (
     <header className={`header ${isNavOpen ? 'header_nav-active' : ''}`}>
       <div className='header__size'>
@@ -69,7 +99,7 @@ const Header = (props) => {
               onClick={handleSignout}
               className={`header__signout ${navigationLinkColors('header__signout_dark')}`}>{`${isNavOpen ? 'Sign out' : currentUser.name}`}</button>
             : <button
-              onClick={togglePopup}
+              onClick={handlePopup}
               className={`header__signin ${navigationLinkColors('header__signin_dark')}`}>Sign in</button>}
         </div>
 
