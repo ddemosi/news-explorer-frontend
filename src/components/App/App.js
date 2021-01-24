@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import { BrowserRouter as Router, Redirect, Route, Switch } from 'react-router-dom';
 
 import { CurrentUserContext } from '../../contexts/CurrentUserContext'
 import Header from '../Header/Header';
@@ -108,6 +108,7 @@ const App = () => {
                 <Footer />
 
               </Route>
+              <Redirect from="*" to="/" />
             </Switch>
           </Router>
           {isFormPopupOpen
