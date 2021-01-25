@@ -67,6 +67,10 @@ const PopupWithForm = (props) => {
               props.toggleLoggedIn(true);
               closePopup();
             })
+            .catch(() => {
+              toggleSigninFailed(true);
+              toggleBadRequest(true);
+            })
         }
         else {
           toggleSigninFailed(true);
