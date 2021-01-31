@@ -5,8 +5,7 @@ const apiKey = "6a763a6b37bf49cf9315c6b0dc70547a"
 
 const newsApiInfo = {
   apiKey,
-  // url: "https://nomoreparties.co/news/v2",
-  url: "http://newsapi.org/v2",
+  url: "https://nomoreparties.co/news/v2",
   endpoint: "/everything",
   pageSize: 100,
   auth: {

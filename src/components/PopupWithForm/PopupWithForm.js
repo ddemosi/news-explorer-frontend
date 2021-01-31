@@ -67,18 +67,18 @@ const PopupWithForm = ({
     signinHandler(emailRef.current.value, passwordRef.current.value)
       .then((res) => {
         if (res) {
+          localStorage.setItem('token', res.token);
           getUserInfo()
             .then((res) => {
-              localStorage.setItem('token', res.token);
               setCurrentUser(res);
             })
             .then(() => {
               emailRef.current.value = "";
               passwordRef.current.value = "";
               toggleSigninFailed(false);
+              toggleInputDisable(false);
               toggleFormPopup(false);
               toggleLoggedIn(true);
-              toggleInputDisable(false);
               closePopup();
             })
             .catch(() => {
@@ -105,6 +105,8 @@ const PopupWithForm = ({
         }
       })
   }
+
+  // validation logic
 
   function isEmail(email) {
     let re = /\S+@\S+\.\S+/;

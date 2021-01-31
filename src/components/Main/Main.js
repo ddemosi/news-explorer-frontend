@@ -6,19 +6,18 @@ import NewsCardList from '../NewsCardList/NewsCardList';
 import Preloader from '../Preloader/Preloader';
 import NothingFound from '../NothingFound/NothingFound';
 
-const Main = ({ isLoggedIn, isLoading, toggleIsLoading, togglePopup, toggleFormPopup, addArticleHandler, getUserArticles, searchHandler, deleteArticleHandler }) => {
+const Main = ({ isLoggedIn, isLoading, toggleIsLoading, handlePopup, addArticleHandler, getUserArticles, searchHandler, deleteArticleHandler }) => {
 
   const [cards, setCards] = useState([]);
   const [visibleCards, setVisibleCards] = useState(0);
 
   async function saveArticle({ keyword, title, text, date, source, link, image }) {
     if (!isLoggedIn) {
-      togglePopup(true);
-      toggleFormPopup(true);
+      handlePopup()
       return false
     }
 
-    addArticleHandler({
+    return addArticleHandler({
       keyword,
       title,
       text,

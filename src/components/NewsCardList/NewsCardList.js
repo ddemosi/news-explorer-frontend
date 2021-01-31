@@ -40,6 +40,7 @@ const NewsCardList = (props) => {
           isLoggedIn={props.isLoggedIn}
           deleteArticleHandler={props.deleteArticleHandler}
           saveArticle={props.saveArticle}
+          togglePopup={props.togglePopup}
         />
       });
     } else {

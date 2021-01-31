@@ -1,5 +1,5 @@
-import React, { useCallback, useContext, useEffect, useState } from 'react';
-import { useLocation } from 'react-router-dom';
+import React, { useContext, useEffect } from 'react';
+import { useHistory } from 'react-router-dom';
 
 import { CurrentUserContext } from '../../contexts/CurrentUserContext';
 import { useComponentWillMount } from '../../utils/useComponentWillMount';
@@ -10,22 +10,16 @@ const Header = (props) => {
 
   // state and context declarations
 
-  const { togglePopup, toggleFormPopup, toggleIsRegisterPopup, signoutHandler } = props;
+  const { togglePopup, toggleFormPopup, signoutHandler, handlePopup, toggleNav, isNavOpen } = props;
 
-  const [isNavOpen, toggleNav] = useState(false);
 
   const currentUser = useContext(CurrentUserContext);
 
-  const location = useLocation();
+  const history = useHistory();
+
+  // const location = useLocation();
 
   // handlers
-
-  const handlePopup = useCallback(() => {
-    togglePopup(true);
-    toggleFormPopup(true);
-    toggleIsRegisterPopup(false);
-    toggleNav(false);
-  }, [togglePopup, toggleFormPopup, toggleIsRegisterPopup, toggleNav])
 
   function handleSignout() {
 
@@ -66,20 +60,20 @@ const Header = (props) => {
 
   // custom hook to remove popup trigger on refresh
   useComponentWillMount(() => {
-    location.state = null;
+    history.location.state = null;
     return
   })
 
   // effect to handle redirect from /saved-news if not logged in
   useEffect(() => {
-    if (location.state === null || location.state === undefined) {
+    if (history.location.state === null || history.location.state === undefined) {
       return
-    } else if (location.state.redirected){
+    } else if (history.location.state.redirected){
       handlePopup();
       return
     }
     return
-  }, [location.state, handlePopup]);
+  }, [history.location.state, handlePopup]);
 
   return (
     <header className={`header ${isNavOpen ? 'header_nav-active' : ''}`}>

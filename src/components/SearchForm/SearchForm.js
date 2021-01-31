@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 
 import { incrementVisibleCardsVariable } from '../../utils/constants';
 
@@ -35,12 +35,12 @@ const SearchForm = ({ setCards, setVisibleCards, toggleIsLoading, isLoggedIn, ge
           savedCards.forEach((card) => {
             urlArray.push(card.url);
           });
-
           // loop through articles, compare, then assign a special property if the article
           // has already been saved
           res.articles.forEach((article) => {
             if (urlArray.includes(article.url)) {
               article.isSaved = true;
+
               // loop through saved cards and find matching url object, then copy it's id to the rendered card
               savedCards.forEach((card) => {
                 if (card.url === article.url) {
@@ -125,7 +125,6 @@ const SearchForm = ({ setCards, setVisibleCards, toggleIsLoading, isLoggedIn, ge
 
       // if user is logged in, assign keyword and sort cards
 
-
       // elevated scope to avoid crashing when data isn't returned fast enough
       let savedCards
 
@@ -133,17 +132,39 @@ const SearchForm = ({ setCards, setVisibleCards, toggleIsLoading, isLoggedIn, ge
       if (localStorage.getItem('articles')) {
         savedCards = JSON.parse(localStorage.getItem('articles'));
         searchAndSort(savedCards);
+        return
       } else {
         // get local data from server for comparison
         getUserArticles()
           .then((res) => {
+            // loop cards and set article format to the same as the NewsAPI
+          let newCards = []
+          res.forEach((card) => {
+            const newCard = {
+              _id: card._id,
+              keyword: card.keyword,
+              publishedAt: card.date,
+              title: card.title,
+              description: card.text,
+              source: card.source,
+              url: card.link,
+              urlToImage: card.image,
+            }
+
+            newCards.push(newCard);
+          });
+          return newCards;
+          })
+          .then((newCards) => {
             // send to sorting handler
-            searchAndSort(res);
+            localStorage.setItem('articles', JSON.stringify(newCards));
+            searchAndSort(newCards);
             return;
           })
           .catch((err) => {
             console.log(err);
           });
+        return
       }
     }
     return
@@ -161,6 +182,18 @@ const SearchForm = ({ setCards, setVisibleCards, toggleIsLoading, isLoggedIn, ge
     }
     return
   }
+
+  // search on dom mount
+  useEffect(() => {
+    const recentSearch = localStorage.getItem('recent-search-keyword');
+    if (recentSearch) {
+      searchRef.current.value = recentSearch;
+      newsSearch();
+      return
+    }
+    return
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isLoggedIn])
 
   return (
     <section className="search-container">

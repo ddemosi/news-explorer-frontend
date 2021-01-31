@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import { BrowserRouter as Router, Redirect, Route, Switch } from 'react-router-dom';
 
 import { CurrentUserContext } from '../../contexts/CurrentUserContext'
@@ -27,6 +27,8 @@ const App = () => {
   const [isRegisterSuccess, toggleRegisterSuccess] = useState(false);
   const [isLoading, toggleIsLoading] = useState(false);
   const [serverError, toggleServerError] = useState(null);
+  const [isNavOpen, toggleNav] = useState(false);
+
 
   function registrationSuccessToSignin() {
     toggleIsRegisterPopup(false);
@@ -39,10 +41,18 @@ const App = () => {
     toggleFormPopup(true);
   }
 
+  const handlePopup = useCallback(() => {
+    togglePopup(true);
+    toggleFormPopup(true);
+    toggleIsRegisterPopup(false);
+    toggleNav(false);
+  }, [togglePopup, toggleFormPopup, toggleIsRegisterPopup, toggleNav])
+
   // api handlers
 
-  function getUserInfo() {
-    return api.getUserInfo();
+  async function getUserInfo() {
+    const returnedUserInfo = await api.getUserInfo();
+    return returnedUserInfo;
   }
 
   function registerHandler(email, password, name) {
@@ -54,28 +64,33 @@ const App = () => {
   }
 
   function signoutHandler() {
-    localStorage.removeItem('token');
-    localStorage.removeItem('recent-search-keyword');
+    localStorage.clear();
     return api.signout();
   }
 
   function getUserArticles() {
+    localStorage.removeItem('articles');
     return api.getArticles();
   }
 
   function deleteArticleHandler(id) {
     if (id) {
+      localStorage.removeItem('articles');
       return api.deleteArticle(id);
     } else {
-      throw new Error('card ID not found');
+      throw new Error('card ID not submitted');
     }
   }
 
-  function addArticleHandler(id) {
-
+  function addArticleHandler(article) {
+    if (article) {
+      return api.addArticle(article);
+    } else {
+      throw new Error('No article submitted');
+    }
   }
 
-  function searchHandler(keyword) {
+  async function searchHandler(keyword) {
     return newsApi.search(keyword);
   }
 
@@ -111,6 +126,9 @@ const App = () => {
                   toggleFormPopup={toggleFormPopup}
                   isSavedNewsRoute={false}
                   signoutHandler={signoutHandler}
+                  handlePopup={handlePopup}
+                  toggleNav={toggleNav}
+                  isNavOpen={isNavOpen}
                 />
 
                 <Main
@@ -125,6 +143,7 @@ const App = () => {
                   addArticleHandler={addArticleHandler}
                   searchHandler={searchHandler}
                   deleteArticleHandler={deleteArticleHandler}
+                  handlePopup={handlePopup}
                 />
 
                 <Footer />
@@ -141,6 +160,9 @@ const App = () => {
                   togglePopup={togglePopup}
                   toggleLoggedIn={toggleLoggedIn}
                   signoutHandler={signoutHandler}
+                  handlePopup={handlePopup}
+                  toggleNav={toggleNav}
+                  isNavOpen={isNavOpen}
                 />
 
                 <ProtectedRoute
@@ -153,6 +175,7 @@ const App = () => {
                   getUserArticles={getUserArticles}
                   deleteArticleHandler={deleteArticleHandler}
                   addArticleHandler={addArticleHandler}
+                  handlePopup={handlePopup}
                 />
 
                 <Footer />
@@ -222,11 +245,10 @@ const App = () => {
       .then((res) => {
         if (res) {
           setCurrentUser(res);
-          toggleLoggedIn(true);
           toggleServerError(false);
+          toggleLoggedIn(true);
           return
         }
-
       })
       .catch((err) => {
         if (err === 'Error: 401') {
@@ -238,10 +260,11 @@ const App = () => {
           return
         }
       })
+      return;
     }
     toggleLoggedIn(false);
     toggleServerError(false);
-    return
+    return;
   }, [])
 
   return checkIsLoggedInBeforeRender();

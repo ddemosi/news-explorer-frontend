@@ -1,17 +1,4 @@
-const apiKey = "0faa4eab3d374a6d99b353e5310a09b0";
-const url = "https://nomoreparties.co/news/v2";
-const endpoint = "/everything";
-const pageSize = 100;
-
-const newsApiEndpoints = {
-  url,
-  endpoint,
-  auth: {
-    Authorization: apiKey,
-  },
-  pageSize,
-  apiKey,
-}
+import { newsApiInfo } from './constants';
 
 class NewsApi {
   constructor({ url, endpoint, auth, pageSize, apiKey }) {
@@ -47,7 +34,7 @@ class NewsApi {
   }
 
   search(keyword) {
-    return fetch(`${this._url}${this._endpoint}?q=${keyword}&from=${this._getFromDate()}&to=${this._getToDate()}&pageSize=${pageSize}&apiKey=${apiKey}`, {
+    return fetch(`${this._url}${this._endpoint}?q=${keyword}&from=${this._getFromDate()}&to=${this._getToDate()}&pageSize=${this._pageSize}&apiKey=${this._apiKey}`, {
       headers: this._auth
     })
       .then((res) => {
@@ -56,6 +43,6 @@ class NewsApi {
   }
 }
 
-const newsApi = new NewsApi(newsApiEndpoints);
+const newsApi = new NewsApi(newsApiInfo);
 
 export default newsApi;

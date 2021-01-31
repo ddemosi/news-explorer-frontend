@@ -11,7 +11,7 @@ const NewsCard = ({ _id,
   isSaved,
   isSavedNewsRoute,
   isLoggedIn,
-  deleteCard,
+  deleteArticleHandler,
   saveArticle
 }) => {
 
@@ -36,13 +36,13 @@ const NewsCard = ({ _id,
   // Click handlers
 
   async function handleDelete() {
-    const cardDeleted = await deleteCard(cardId);
+    const cardDeleted = await deleteArticleHandler(cardId);
     if (cardDeleted) {
       toggleIsSavedIcon(false);
       return
     }
     //otherwise throw error
-    throw new Error('Save article request unsuccessful')
+    // throw new Error('Save article request unsuccessful')
   };
 
   async function handleArticleSave() {
@@ -71,9 +71,7 @@ const NewsCard = ({ _id,
         return
       } else {
         toggleIsSavedIcon(false);
-        //otherwise throw error
-        throw new Error('Save article request unsuccessful')
-
+        return
       }
     }
   };
@@ -130,6 +128,7 @@ const NewsCard = ({ _id,
       setCardId(null);
     }
     return
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   return (

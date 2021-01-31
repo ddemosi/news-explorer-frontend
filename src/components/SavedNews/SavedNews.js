@@ -4,9 +4,7 @@ import Preloader from '../Preloader/Preloader';
 import NothingFound from '../NothingFound/NothingFound';
 import SavedNewsHeader from '../SavedNewsHeader/SavedNewsHeader';
 
-import api from '../../utils/MainApi';
-
-const SavedNews = ({ isLoading, toggleIsLoading, isLoggedIn, deleteArticleHandler }) => {
+const SavedNews = ({ isLoading, toggleIsLoading, isLoggedIn, deleteArticleHandler, getUserArticles }) => {
 
   const [savedCards, setSavedCards] = useState();
   const [sortedKeywords, setSortedKeywords] = useState([]);
@@ -17,7 +15,6 @@ const SavedNews = ({ isLoading, toggleIsLoading, isLoggedIn, deleteArticleHandle
     if (id) {
       deleteArticleHandler(id)
         .then(() => {
-          localStorage.removeItem('articles');
           retrieveCards();
         })
         .catch((err) => {
@@ -94,7 +91,7 @@ const SavedNews = ({ isLoading, toggleIsLoading, isLoggedIn, deleteArticleHandle
         setSavedCards(cards);
         toggleIsLoading(false);
     } else {
-      api.getArticles()
+      getUserArticles()
         .then((res) => {
           // loop cards and set article format to the same as the NewsAPI
           let newCards = []
@@ -131,7 +128,7 @@ const SavedNews = ({ isLoading, toggleIsLoading, isLoggedIn, deleteArticleHandle
           console.log(err);
         });
     }
-  }, [toggleIsLoading, setSavedCards, setSortedKeywords])
+  }, [toggleIsLoading, getUserArticles])
 
   // Render cards when they arrive
 
@@ -159,7 +156,7 @@ const SavedNews = ({ isLoading, toggleIsLoading, isLoggedIn, deleteArticleHandle
               setCards={setSavedCards}
               visibleCards={savedCards.length}
               setVisibleCards={null}
-              deleteCardHandler={deleteCard}
+              deleteArticleHandler={deleteCard}
               sortedKeywords={sortedKeywords}
 
             />
