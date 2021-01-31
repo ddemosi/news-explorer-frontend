@@ -3,6 +3,7 @@ import { useLocation } from 'react-router-dom';
 
 import { CurrentUserContext } from '../../contexts/CurrentUserContext';
 import { useComponentWillMount } from '../../utils/useComponentWillMount';
+import api from '../../utils/MainApi';
 
 import Navigation from '../Navigation/Navigation';
 
@@ -10,7 +11,7 @@ const Header = (props) => {
 
   // state and context declarations
 
-  const { togglePopup, toggleFormPopup, toggleIsRegisterPopup, signoutHandler } = props;
+  const { togglePopup, toggleFormPopup, toggleIsRegisterPopup } = props;
 
   const [isNavOpen, toggleNav] = useState(false);
 
@@ -29,13 +30,11 @@ const Header = (props) => {
 
   function handleSignout() {
 
-    signoutHandler()
+    api.signout()
       .then(() => {
         props.toggleLoggedIn(false);
         toggleNav(false);
         localStorage.removeItem('articles');
-        localStorage.removeItem('token');
-        localStorage.removeItem('recent-search-keyword');
       })
       .catch((err) => {
         console.log(err);

@@ -6,7 +6,7 @@ import NewsCardList from '../NewsCardList/NewsCardList';
 import Preloader from '../Preloader/Preloader';
 import NothingFound from '../NothingFound/NothingFound';
 
-const Main = ({ isLoggedIn, isLoading, toggleIsLoading, togglePopup, toggleFormPopup, addArticleHandler, getUserArticles, searchHandler, deleteArticleHandler }) => {
+const Main = ({ isLoggedIn, isLoading, toggleIsLoading, togglePopup, toggleFormPopup, addArticleHandler, getUserArticles, searchHandler }) => {
 
   const [cards, setCards] = useState([]);
   const [visibleCards, setVisibleCards] = useState(0);
@@ -62,7 +62,6 @@ const Main = ({ isLoggedIn, isLoading, toggleIsLoading, togglePopup, toggleFormP
             visibleCards={visibleCards}
             setVisibleCards={setVisibleCards}
             saveArticle={saveArticle}
-            deleteArticleHandler={deleteArticleHandler}
           />
         )
       }

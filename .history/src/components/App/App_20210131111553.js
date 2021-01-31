@@ -64,11 +64,7 @@ const App = () => {
   }
 
   function deleteArticleHandler(id) {
-    if (id) {
-      return api.deleteArticle(id);
-    } else {
-      throw new Error('card ID not found');
-    }
+    return api.deleteArticle(id);
   }
 
   function addArticleHandler(id) {
@@ -124,7 +120,6 @@ const App = () => {
                   getUserArticles={getUserArticles}
                   addArticleHandler={addArticleHandler}
                   searchHandler={searchHandler}
-                  deleteArticleHandler={deleteArticleHandler}
                 />
 
                 <Footer />

@@ -31,10 +31,10 @@ const SavedNewsHeader = ({ savedCards, sortedKeywords }) => {
       <div className="saved-news-header__width">
         <p className="saved-news-header__label">Saved articles</p>
         <h2 className="saved-news-header__title">
-          {currentUser.name}, you have {savedCards && savedCards.length > 0 ? savedCards.length : "no"} saved articles
+          {currentUser.name}, you have {savedCards ? savedCards.length : "no"} saved articles
         </h2>
         {
-          sortedKeywords && sortedKeywords.length > 0
+          sortedKeywords
             ? <p className="saved-news-header__keyword-text">
               By keywords: <span className="saved-news-header__keywords">{keywordList()}</span>
             </p>

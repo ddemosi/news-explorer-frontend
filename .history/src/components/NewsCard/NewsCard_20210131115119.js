@@ -130,7 +130,7 @@ const NewsCard = ({ _id,
       setCardId(null);
     }
     return
-  }, [])
+  })
 
   return (
     <li className="news-card">

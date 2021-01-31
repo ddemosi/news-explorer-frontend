@@ -13,7 +13,6 @@ import api from '../../utils/MainApi';
 import ProtectedRoute from '../ProtectedRoute/ProtectedRoute';
 import Preloader from '../Preloader/Preloader';
 import NothingFound from '../NothingFound/NothingFound';
-import newsApi from '../../utils/NewsApi';
 
 
 
@@ -37,46 +36,6 @@ const App = () => {
     toggleIsRegisterPopup(true);
     toggleRegisterSuccessPopup(false);
     toggleFormPopup(true);
-  }
-
-  // api handlers
-
-  function getUserInfo() {
-    return api.getUserInfo();
-  }
-
-  function registerHandler(email, password, name) {
-    return api.register(email, password, name);
-  }
-
-  function signinHandler(email, password) {
-    return api.signin(email, password);
-  }
-
-  function signoutHandler() {
-    localStorage.removeItem('token');
-    localStorage.removeItem('recent-search-keyword');
-    return api.signout();
-  }
-
-  function getUserArticles() {
-    return api.getArticles();
-  }
-
-  function deleteArticleHandler(id) {
-    if (id) {
-      return api.deleteArticle(id);
-    } else {
-      throw new Error('card ID not found');
-    }
-  }
-
-  function addArticleHandler(id) {
-
-  }
-
-  function searchHandler(keyword) {
-    return newsApi.search(keyword);
   }
 
   function checkIsLoggedInBeforeRender() {
@@ -110,7 +69,6 @@ const App = () => {
                   togglePopup={togglePopup}
                   toggleFormPopup={toggleFormPopup}
                   isSavedNewsRoute={false}
-                  signoutHandler={signoutHandler}
                 />
 
                 <Main
@@ -121,10 +79,6 @@ const App = () => {
                   isFormPopupOpen={isFormPopupOpen}
                   togglePopup={togglePopup}
                   toggleFormPopup={toggleFormPopup}
-                  getUserArticles={getUserArticles}
-                  addArticleHandler={addArticleHandler}
-                  searchHandler={searchHandler}
-                  deleteArticleHandler={deleteArticleHandler}
                 />
 
                 <Footer />
@@ -140,7 +94,6 @@ const App = () => {
                   toggleFormPopup={toggleFormPopup}
                   togglePopup={togglePopup}
                   toggleLoggedIn={toggleLoggedIn}
-                  signoutHandler={signoutHandler}
                 />
 
                 <ProtectedRoute
@@ -150,9 +103,6 @@ const App = () => {
                   toggleIsLoading={toggleIsLoading}
                   toggleFormPopup={toggleFormPopup}
                   togglePopup={togglePopup}
-                  getUserArticles={getUserArticles}
-                  deleteArticleHandler={deleteArticleHandler}
-                  addArticleHandler={addArticleHandler}
                 />
 
                 <Footer />
@@ -179,9 +129,6 @@ const App = () => {
                 isRegisterSuccess={isRegisterSuccess}
                 toggleRegisterSuccess={toggleRegisterSuccess}
                 setCurrentUser={setCurrentUser}
-                registerHandler={registerHandler}
-                signinHandler={signinHandler}
-                getUserInfo={getUserInfo}
               />
             </Popup>
             : ""}
@@ -216,9 +163,8 @@ const App = () => {
   }
 
   useEffect(() => {
-    const token = localStorage.getItem('token');
-    if (token) {
-      getUserInfo()
+
+    api.getUserInfo()
       .then((res) => {
         if (res) {
           setCurrentUser(res);
@@ -237,11 +183,8 @@ const App = () => {
           console.log(err);
           return
         }
+
       })
-    }
-    toggleLoggedIn(false);
-    toggleServerError(false);
-    return
   }, [])
 
   return checkIsLoggedInBeforeRender();

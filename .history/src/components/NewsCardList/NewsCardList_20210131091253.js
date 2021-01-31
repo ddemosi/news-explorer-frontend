@@ -3,17 +3,15 @@ import React, { useState } from 'react';
 import NewsCard from '../NewsCard/NewsCard';
 import NothingFound from '../NothingFound/NothingFound';
 
-import { maxVisibleCards, incrementVisibleCardsVariable} from '../../utils/constants';
-
 const NewsCardList = (props) => {
   const [hideButton, toggleButton] = useState(false);
 
   function incrementVisibleCards() {
-    if (props.visibleCards > maxVisibleCards) {
+    if (props.visibleCards > 100) {
       toggleButton(true);
       return
     } else {
-      const newVisibleCards = props.visibleCards + incrementVisibleCardsVariable;
+      const newVisibleCards = props.visibleCards + 3;
       props.setVisibleCards(newVisibleCards);
     }
 
@@ -38,8 +36,9 @@ const NewsCardList = (props) => {
           isSaved={card.isSaved}
           isSavedNewsRoute={props.isSavedNewsRoute}
           isLoggedIn={props.isLoggedIn}
-          deleteArticleHandler={props.deleteArticleHandler}
+          deleteCard={props.deleteCard}
           saveArticle={props.saveArticle}
+
         />
       });
     } else {

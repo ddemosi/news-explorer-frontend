@@ -21,7 +21,8 @@ const SearchForm = ({ setCards, setVisibleCards, toggleIsLoading, isLoggedIn, ge
         if (!savedCards) {
           // check for card retrieval error
           throw new Error('Saved articles retrieval failed');
-        } else if (savedCards.length === 0 || null) {
+        }
+        if (savedCards.length === 0 || null) {
           // if there are no local card, loop articles and assign keyword. Then return
           res.articles.forEach((article) => {
             article.keyword = searchRef.current.value;
@@ -65,7 +66,6 @@ const SearchForm = ({ setCards, setVisibleCards, toggleIsLoading, isLoggedIn, ge
           return
         } else {
           toggleIsLoading(false);
-          disableInputs(false);
           throw new Error('Unhandled request error')
         }
       })

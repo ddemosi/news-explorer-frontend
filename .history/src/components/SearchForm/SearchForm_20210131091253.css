@@ -59,10 +59,6 @@
   padding-left: 24px;
 }
 
-.search-bar__input_disabled {
-  background-color: #b6b5b5;
-}
-
 .search-bar__input:focus {
   box-shadow: 0 0 5px #2F71E5;
   border: 1px solid #2F71E5;

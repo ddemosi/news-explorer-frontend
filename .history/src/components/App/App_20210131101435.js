@@ -13,7 +13,6 @@ import api from '../../utils/MainApi';
 import ProtectedRoute from '../ProtectedRoute/ProtectedRoute';
 import Preloader from '../Preloader/Preloader';
 import NothingFound from '../NothingFound/NothingFound';
-import newsApi from '../../utils/NewsApi';
 
 
 
@@ -59,24 +58,12 @@ const App = () => {
     return api.signout();
   }
 
-  function getUserArticles() {
-    return api.getArticles();
-  }
-
   function deleteArticleHandler(id) {
-    if (id) {
-      return api.deleteArticle(id);
-    } else {
-      throw new Error('card ID not found');
-    }
+    return api.deleteArticle(id);
   }
 
-  function addArticleHandler(id) {
+  function saveCardHandler(id) {
 
-  }
-
-  function searchHandler(keyword) {
-    return newsApi.search(keyword);
   }
 
   function checkIsLoggedInBeforeRender() {
@@ -121,10 +108,6 @@ const App = () => {
                   isFormPopupOpen={isFormPopupOpen}
                   togglePopup={togglePopup}
                   toggleFormPopup={toggleFormPopup}
-                  getUserArticles={getUserArticles}
-                  addArticleHandler={addArticleHandler}
-                  searchHandler={searchHandler}
-                  deleteArticleHandler={deleteArticleHandler}
                 />
 
                 <Footer />
@@ -150,9 +133,6 @@ const App = () => {
                   toggleIsLoading={toggleIsLoading}
                   toggleFormPopup={toggleFormPopup}
                   togglePopup={togglePopup}
-                  getUserArticles={getUserArticles}
-                  deleteArticleHandler={deleteArticleHandler}
-                  addArticleHandler={addArticleHandler}
                 />
 
                 <Footer />
@@ -181,7 +161,7 @@ const App = () => {
                 setCurrentUser={setCurrentUser}
                 registerHandler={registerHandler}
                 signinHandler={signinHandler}
-                getUserInfo={getUserInfo}
+
               />
             </Popup>
             : ""}
@@ -216,6 +196,7 @@ const App = () => {
   }
 
   useEffect(() => {
+
     const token = localStorage.getItem('token');
     if (token) {
       getUserInfo()

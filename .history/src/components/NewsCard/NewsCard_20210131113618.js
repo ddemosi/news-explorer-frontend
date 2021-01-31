@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 
-const NewsCard = ({ _id,
+const NewsCard = ({_id,
   keyword,
   date,
   title,
@@ -16,7 +16,6 @@ const NewsCard = ({ _id,
 }) => {
 
   const [isSavedIcon, toggleIsSavedIcon] = useState(false);
-  const [cardId, setCardId] = useState("");
 
   // Utility functions to help with formatting
 
@@ -35,14 +34,8 @@ const NewsCard = ({ _id,
 
   // Click handlers
 
-  async function handleDelete() {
-    const cardDeleted = await deleteCard(cardId);
-    if (cardDeleted) {
-      toggleIsSavedIcon(false);
-      return
-    }
-    //otherwise throw error
-    throw new Error('Save article request unsuccessful')
+  function handleDelete() {
+    deleteCard(_id);
   };
 
   async function handleArticleSave() {
@@ -54,7 +47,7 @@ const NewsCard = ({ _id,
 
       // send article up to Main component to be handled
 
-      const savedArticleId = await saveArticle({
+      if(await saveArticle({
         keyword: keyword,
         title: title,
         text: description,
@@ -63,17 +56,14 @@ const NewsCard = ({ _id,
         link: url,
         image: image,
       })
-
-      if (savedArticleId) {
+      ) {
         // if saveArticle returns true
         toggleIsSavedIcon(true);
-        setCardId(savedArticleId)
         return
       } else {
         toggleIsSavedIcon(false);
-        //otherwise throw error
-        throw new Error('Save article request unsuccessful')
-
+        //otherwise do nothing
+        return;
       }
     }
   };
@@ -82,7 +72,7 @@ const NewsCard = ({ _id,
   // This is only relevant when searching for cards on NewsApi, not local.
 
   useEffect(() => {
-    if (isSaved) {
+    if (isSaved){
       toggleIsSavedIcon(true);
     };
     return
@@ -119,18 +109,6 @@ const NewsCard = ({ _id,
       )
     }
   }
-
-  // effect to set cardId to a dynamic state on mount
-
-  useEffect(() => {
-    if (_id) {
-      setCardId(_id);
-      return
-    } else {
-      setCardId(null);
-    }
-    return
-  }, [])
 
   return (
     <li className="news-card">

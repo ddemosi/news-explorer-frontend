@@ -6,7 +6,7 @@ import SavedNewsHeader from '../SavedNewsHeader/SavedNewsHeader';
 
 import api from '../../utils/MainApi';
 
-const SavedNews = ({ isLoading, toggleIsLoading, isLoggedIn, deleteArticleHandler }) => {
+const SavedNews = ({ isLoading, toggleIsLoading, isLoggedIn }) => {
 
   const [savedCards, setSavedCards] = useState();
   const [sortedKeywords, setSortedKeywords] = useState([]);
@@ -15,7 +15,7 @@ const SavedNews = ({ isLoading, toggleIsLoading, isLoggedIn, deleteArticleHandle
 
   function deleteCard(id) {
     if (id) {
-      deleteArticleHandler(id)
+      api.deleteArticle(id)
         .then(() => {
           localStorage.removeItem('articles');
           retrieveCards();
@@ -159,9 +159,8 @@ const SavedNews = ({ isLoading, toggleIsLoading, isLoggedIn, deleteArticleHandle
               setCards={setSavedCards}
               visibleCards={savedCards.length}
               setVisibleCards={null}
-              deleteCardHandler={deleteCard}
+              deleteCard={deleteCard}
               sortedKeywords={sortedKeywords}
-
             />
           )
         }

@@ -38,8 +38,9 @@ const NewsCardList = (props) => {
           isSaved={card.isSaved}
           isSavedNewsRoute={props.isSavedNewsRoute}
           isLoggedIn={props.isLoggedIn}
-          deleteArticleHandler={props.deleteArticleHandler}
+          deleteCard={props.deleteCard}
           saveArticle={props.saveArticle}
+
         />
       });
     } else {

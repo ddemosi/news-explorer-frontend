@@ -6,38 +6,47 @@ import NewsCardList from '../NewsCardList/NewsCardList';
 import Preloader from '../Preloader/Preloader';
 import NothingFound from '../NothingFound/NothingFound';
 
-const Main = ({ isLoggedIn, isLoading, toggleIsLoading, togglePopup, toggleFormPopup, addArticleHandler, getUserArticles, searchHandler, deleteArticleHandler }) => {
+import api from '../../utils/MainApi';
+
+const Main = (props) => {
+
+  const { isLoggedIn, isLoading, toggleIsLoading, togglePopup, toggleFormPopup } = props;
 
   const [cards, setCards] = useState([]);
   const [visibleCards, setVisibleCards] = useState(0);
 
   async function saveArticle({ keyword, title, text, date, source, link, image }) {
-    if (!isLoggedIn) {
+    if (!props.isLoggedIn) {
       togglePopup(true);
       toggleFormPopup(true);
       return false
     }
-
-    addArticleHandler({
-      keyword,
-      title,
-      text,
-      date,
-      source,
-      link,
-      image,
-    })
-      .then((res) => {
-        if (res) {
-          localStorage.removeItem('articles');
-          return res._id;
-        }
-        return false;
+    // use if statement to check if promise is a success so NewsCard can verify if it was saved
+    if (await
+      api.addArticle({
+        keyword,
+        title,
+        text,
+        date,
+        source,
+        link,
+        image,
       })
-      .catch((err) => {
-        console.log(err);
-      })
-
+        .then((res) => {
+          if(res) {
+            localStorage.removeItem('articles');
+            return true;
+          }
+          return false;
+        })
+        .catch((err) => {
+          console.log(err);
+        })
+    ) {
+      return true;
+    } else {
+      return false;
+    }
   }
 
   function renderCardList() {
@@ -62,7 +71,6 @@ const Main = ({ isLoggedIn, isLoading, toggleIsLoading, togglePopup, toggleFormP
             visibleCards={visibleCards}
             setVisibleCards={setVisibleCards}
             saveArticle={saveArticle}
-            deleteArticleHandler={deleteArticleHandler}
           />
         )
       }
@@ -77,8 +85,6 @@ const Main = ({ isLoggedIn, isLoading, toggleIsLoading, togglePopup, toggleFormP
         setVisibleCards={setVisibleCards}
         toggleIsLoading={toggleIsLoading}
         isLoggedIn={isLoggedIn}
-        getUserArticles={getUserArticles}
-        searchHandler={searchHandler}
       />
 
       {renderCardList()}

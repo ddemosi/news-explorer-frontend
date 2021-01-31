@@ -1,4 +1,6 @@
 import React, { useState, useRef } from 'react';
+import validator from 'validator';
+
 
 const PopupWithForm = ({
   isRegisterPopup,
@@ -20,7 +22,7 @@ const PopupWithForm = ({
   const [errors, setErrors] = useState({});
   const [signinFailed, toggleSigninFailed] = useState(false);
   const [badRequest, toggleBadRequest] = useState(false);
-  const [disableInputs, toggleInputDisable] = useState(false);
+  const { disableInputs, toggleInputDisable } = useState(false);
 
   // Ref assignments
 
@@ -69,7 +71,6 @@ const PopupWithForm = ({
         if (res) {
           getUserInfo()
             .then((res) => {
-              localStorage.setItem('token', res.token);
               setCurrentUser(res);
             })
             .then(() => {
@@ -113,7 +114,7 @@ const PopupWithForm = ({
 
 
   function isStrongPassword(password) {
-    const re = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d\w\W]{8,}$/
+    const re = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z]{8,}$/;
     return re.test(password)
   }
 

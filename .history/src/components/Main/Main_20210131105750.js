@@ -6,7 +6,7 @@ import NewsCardList from '../NewsCardList/NewsCardList';
 import Preloader from '../Preloader/Preloader';
 import NothingFound from '../NothingFound/NothingFound';
 
-const Main = ({ isLoggedIn, isLoading, toggleIsLoading, togglePopup, toggleFormPopup, addArticleHandler, getUserArticles, searchHandler, deleteArticleHandler }) => {
+const Main = ({ isLoggedIn, isLoading, toggleIsLoading, togglePopup, toggleFormPopup, addArticleHandler }) => {
 
   const [cards, setCards] = useState([]);
   const [visibleCards, setVisibleCards] = useState(0);
@@ -28,7 +28,7 @@ const Main = ({ isLoggedIn, isLoading, toggleIsLoading, togglePopup, toggleFormP
       image,
     })
       .then((res) => {
-        if (res) {
+        if(res) {
           localStorage.removeItem('articles');
           return res._id;
         }
@@ -62,7 +62,6 @@ const Main = ({ isLoggedIn, isLoading, toggleIsLoading, togglePopup, toggleFormP
             visibleCards={visibleCards}
             setVisibleCards={setVisibleCards}
             saveArticle={saveArticle}
-            deleteArticleHandler={deleteArticleHandler}
           />
         )
       }
@@ -77,8 +76,6 @@ const Main = ({ isLoggedIn, isLoading, toggleIsLoading, togglePopup, toggleFormP
         setVisibleCards={setVisibleCards}
         toggleIsLoading={toggleIsLoading}
         isLoggedIn={isLoggedIn}
-        getUserArticles={getUserArticles}
-        searchHandler={searchHandler}
       />
 
       {renderCardList()}

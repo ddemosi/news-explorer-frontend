@@ -13,7 +13,6 @@ import api from '../../utils/MainApi';
 import ProtectedRoute from '../ProtectedRoute/ProtectedRoute';
 import Preloader from '../Preloader/Preloader';
 import NothingFound from '../NothingFound/NothingFound';
-import newsApi from '../../utils/NewsApi';
 
 
 
@@ -64,19 +63,11 @@ const App = () => {
   }
 
   function deleteArticleHandler(id) {
-    if (id) {
-      return api.deleteArticle(id);
-    } else {
-      throw new Error('card ID not found');
-    }
+    return api.deleteArticle(id);
   }
 
   function addArticleHandler(id) {
 
-  }
-
-  function searchHandler(keyword) {
-    return newsApi.search(keyword);
   }
 
   function checkIsLoggedInBeforeRender() {
@@ -123,8 +114,6 @@ const App = () => {
                   toggleFormPopup={toggleFormPopup}
                   getUserArticles={getUserArticles}
                   addArticleHandler={addArticleHandler}
-                  searchHandler={searchHandler}
-                  deleteArticleHandler={deleteArticleHandler}
                 />
 
                 <Footer />

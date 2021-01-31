@@ -1,18 +1,21 @@
 import React, { useState, useRef } from 'react';
+import validator from 'validator';
+
 
 const PopupWithForm = ({
   isRegisterPopup,
   toggleIsRegisterPopup,
   isFormPopupOpen,
   toggleFormPopup,
+  isRegisterSuccessPopupOpen,
   toggleRegisterSuccessPopup,
   togglePopup,
   toggleLoggedIn,
+  isRegisterSuccess,
   toggleRegisterSuccess,
   setCurrentUser,
   registerHandler,
   signinHandler,
-  getUserInfo,
 }) => {
 
   // State constants
@@ -20,7 +23,7 @@ const PopupWithForm = ({
   const [errors, setErrors] = useState({});
   const [signinFailed, toggleSigninFailed] = useState(false);
   const [badRequest, toggleBadRequest] = useState(false);
-  const [disableInputs, toggleInputDisable] = useState(false);
+  const { disableInputs, toggleInputDisable } = useState(false);
 
   // Ref assignments
 
@@ -63,13 +66,11 @@ const PopupWithForm = ({
 
   function handleSigninSubmit(e) {
     e.preventDefault()
-    toggleInputDisable(true);
     signinHandler(emailRef.current.value, passwordRef.current.value)
       .then((res) => {
         if (res) {
           getUserInfo()
             .then((res) => {
-              localStorage.setItem('token', res.token);
               setCurrentUser(res);
             })
             .then(() => {
@@ -78,18 +79,15 @@ const PopupWithForm = ({
               toggleSigninFailed(false);
               toggleFormPopup(false);
               toggleLoggedIn(true);
-              toggleInputDisable(false);
               closePopup();
             })
             .catch(() => {
               toggleSigninFailed(true);
-              toggleInputDisable(false);
               toggleBadRequest(true);
             })
         }
         else {
           toggleSigninFailed(true);
-          toggleInputDisable(false);
           toggleBadRequest(true);
         }
       })
@@ -97,10 +95,8 @@ const PopupWithForm = ({
         if (err === "Error: 400") {
           toggleSigninFailed(true);
           toggleBadRequest(true);
-          toggleInputDisable(false);
         } else {
           toggleSigninFailed(true);
-          toggleInputDisable(false);
           console.log(err);
         }
       })
@@ -113,7 +109,7 @@ const PopupWithForm = ({
 
 
   function isStrongPassword(password) {
-    const re = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d\w\W]{8,}$/
+    const re = new RegExp("^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$")
     return re.test(password)
   }
 

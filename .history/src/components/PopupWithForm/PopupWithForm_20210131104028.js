@@ -107,13 +107,13 @@ const PopupWithForm = ({
   }
 
   function isEmail(email) {
-    let re = /\S+@\S+\.\S+/;
+    let re = new RegExp("^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$");
     return re.test(email);
   }
 
 
   function isStrongPassword(password) {
-    const re = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d\w\W]{8,}$/
+    const re = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z]{8,}$/;
     return re.test(password)
   }
 

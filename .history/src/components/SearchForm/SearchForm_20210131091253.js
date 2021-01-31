@@ -1,27 +1,22 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef } from 'react';
 
-import { incrementVisibleCardsVariable } from '../../utils/constants';
+import newsApi from '../../utils/NewsApi';
+import api from '../../utils/MainApi';
 
-const SearchForm = ({ setCards, setVisibleCards, toggleIsLoading, isLoggedIn, getUserArticles, searchHandler }) => {
+const SearchForm = (props) => {
 
   const searchRef = useRef();
-
-  // disable inputs state
-  const [disableInputs, toggleInputDisable] = useState(false);
 
   // check if any of the cards match cards that are already saved
 
   function searchAndSort(savedCards) {
-    searchHandler(searchRef.current.value)
+    newsApi.search(searchRef.current.value)
       .then((res) => {
         // array of articles to be compared then returned after loop
         let newArticles = []
         let urlArray = [];
         // check if there are no saved cards or an error
-        if (!savedCards) {
-          // check for card retrieval error
-          throw new Error('Saved articles retrieval failed');
-        } else if (savedCards.length === 0 || null) {
+        if (savedCards.length === 0 || null) {
           // if there are no local card, loop articles and assign keyword. Then return
           res.articles.forEach((article) => {
             article.keyword = searchRef.current.value;
@@ -30,6 +25,9 @@ const SearchForm = ({ setCards, setVisibleCards, toggleIsLoading, isLoggedIn, ge
 
           return newArticles;
 
+        } else if (!savedCards) {
+          // check for card retrieval error
+          throw new Error('Saved articles retrieval failed');
         } else {
           // loop through saved cards and extract the url
           savedCards.forEach((card) => {
@@ -41,13 +39,6 @@ const SearchForm = ({ setCards, setVisibleCards, toggleIsLoading, isLoggedIn, ge
           res.articles.forEach((article) => {
             if (urlArray.includes(article.url)) {
               article.isSaved = true;
-              // loop through saved cards and find matching url object, then copy it's id to the rendered card
-              savedCards.forEach((card) => {
-                if (card.url === article.url) {
-                  article._id = card._id;
-                }
-                return
-              })
             };
             // then assign keyword
             article.keyword = searchRef.current.value;
@@ -60,40 +51,35 @@ const SearchForm = ({ setCards, setVisibleCards, toggleIsLoading, isLoggedIn, ge
       })
       .then((articles) => {
         if (articles) {
-          setVisibleCards(incrementVisibleCardsVariable);
-          setCards(articles);
+          props.setVisibleCards(3);
+          props.setCards(articles);
           return
         } else {
-          toggleIsLoading(false);
-          disableInputs(false);
+          props.toggleIsLoading(false);
           throw new Error('Unhandled request error')
         }
       })
       .then(() => {
         // clear loading icon
-        toggleIsLoading(false);
-        toggleInputDisable(false);
+        props.toggleIsLoading(false);
       })
       .catch((err) => {
-        toggleInputDisable(false);
         console.log(err);
       })
   }
 
   // Search click handler
 
-  function newsSearch() {
-    // disable input to prevent unwanted requests
-    toggleInputDisable(true);
-    localStorage.setItem('recent-search-keyword', searchRef.current.value);
+  function newsSearch(e) {
+    e.preventDefault();
     if (searchRef.current.value.length > 0) {
       // set loading icon
-      toggleIsLoading(true);
+      props.toggleIsLoading(true);
 
       // if user is not logged in, ignore sorting function, but still assign keywords
-      if (!isLoggedIn) {
+      if (!props.isLoggedIn) {
 
-        searchHandler(searchRef.current.value)
+        newsApi.search(searchRef.current.value)
           .then((res) => {
             // loop through articles and assign keyword
             let newArticles = [];
@@ -105,22 +91,21 @@ const SearchForm = ({ setCards, setVisibleCards, toggleIsLoading, isLoggedIn, ge
           })
           .then((articles) => {
             if (articles) {
-              setVisibleCards(incrementVisibleCardsVariable);
-              setCards(articles);
+              props.setVisibleCards(3);
+              props.setCards(articles);
               return
             } else {
-              toggleIsLoading(false);
+              props.toggleIsLoading(false);
               throw new Error('Unhandled request error')
             }
           })
           .then(() => {
-            toggleInputDisable(false);
-            toggleIsLoading(false);
+            props.toggleIsLoading(false);
           })
           .catch((err) => {
             console.log(err);
           })
-        return
+          return
       }
 
       // if user is logged in, assign keyword and sort cards
@@ -135,7 +120,7 @@ const SearchForm = ({ setCards, setVisibleCards, toggleIsLoading, isLoggedIn, ge
         searchAndSort(savedCards);
       } else {
         // get local data from server for comparison
-        getUserArticles()
+        api.getArticles()
           .then((res) => {
             // send to sorting handler
             searchAndSort(res);
@@ -149,15 +134,10 @@ const SearchForm = ({ setCards, setVisibleCards, toggleIsLoading, isLoggedIn, ge
     return
   }
 
-  function searchEventHandler(e) {
-    e.preventDefault();
-    newsSearch();
-  }
-
   function handleEnterKey(e) {
     e.preventDefault()
     if (e.key === 'Enter') {
-      searchEventHandler(e);
+      newsSearch(e);
     }
     return
   }
@@ -167,8 +147,8 @@ const SearchForm = ({ setCards, setVisibleCards, toggleIsLoading, isLoggedIn, ge
       <div className="search-container__width">
         <h2 className="search-container__title">What's going on in the world?</h2>
         <p className="search-container__subtitle">Find the latest news on any topic and save them in your personal account</p>
-        <form onSubmit={searchEventHandler} className='search-bar'>
-          <input ref={searchRef} onKeyUp={handleEnterKey} type="text" placeholder="Enter topic" className={`search-bar__input ${disableInputs ? 'search-bar__input_disabled' : ''}`} disabled={disableInputs} />
+        <form onSubmit={newsSearch} className='search-bar'>
+          <input ref={searchRef} onKeyUp={handleEnterKey} type="text" placeholder="Enter topic" className='search-bar__input' />
           <button type="submit" className='search-bar__button'>Search</button>
         </form>
       </div>

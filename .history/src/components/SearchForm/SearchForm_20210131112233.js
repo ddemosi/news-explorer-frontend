@@ -1,5 +1,7 @@
 import React, { useRef, useState } from 'react';
 
+import newsApi from '../../utils/NewsApi';
+import api from '../../utils/MainApi';
 import { incrementVisibleCardsVariable } from '../../utils/constants';
 
 const SearchForm = ({ setCards, setVisibleCards, toggleIsLoading, isLoggedIn, getUserArticles, searchHandler }) => {
@@ -21,7 +23,8 @@ const SearchForm = ({ setCards, setVisibleCards, toggleIsLoading, isLoggedIn, ge
         if (!savedCards) {
           // check for card retrieval error
           throw new Error('Saved articles retrieval failed');
-        } else if (savedCards.length === 0 || null) {
+        }
+        if (savedCards.length === 0 || null) {
           // if there are no local card, loop articles and assign keyword. Then return
           res.articles.forEach((article) => {
             article.keyword = searchRef.current.value;
@@ -65,7 +68,6 @@ const SearchForm = ({ setCards, setVisibleCards, toggleIsLoading, isLoggedIn, ge
           return
         } else {
           toggleIsLoading(false);
-          disableInputs(false);
           throw new Error('Unhandled request error')
         }
       })
@@ -149,7 +151,7 @@ const SearchForm = ({ setCards, setVisibleCards, toggleIsLoading, isLoggedIn, ge
     return
   }
 
-  function searchEventHandler(e) {
+  function searchHandler(e) {
     e.preventDefault();
     newsSearch();
   }
@@ -157,7 +159,7 @@ const SearchForm = ({ setCards, setVisibleCards, toggleIsLoading, isLoggedIn, ge
   function handleEnterKey(e) {
     e.preventDefault()
     if (e.key === 'Enter') {
-      searchEventHandler(e);
+      searchHandler(e);
     }
     return
   }
@@ -167,7 +169,7 @@ const SearchForm = ({ setCards, setVisibleCards, toggleIsLoading, isLoggedIn, ge
       <div className="search-container__width">
         <h2 className="search-container__title">What's going on in the world?</h2>
         <p className="search-container__subtitle">Find the latest news on any topic and save them in your personal account</p>
-        <form onSubmit={searchEventHandler} className='search-bar'>
+        <form onSubmit={searchHandler} className='search-bar'>
           <input ref={searchRef} onKeyUp={handleEnterKey} type="text" placeholder="Enter topic" className={`search-bar__input ${disableInputs ? 'search-bar__input_disabled' : ''}`} disabled={disableInputs} />
           <button type="submit" className='search-bar__button'>Search</button>
         </form>

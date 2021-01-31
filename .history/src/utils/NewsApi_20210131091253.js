@@ -26,28 +26,8 @@ class NewsApi {
     return (res.ok ? res.json() : Promise.reject(`Error: ${res.status}`));
   }
 
-  _getFromDate() {
-    const dateObj = new Date(new Date().setDate(new Date().getDate()-5));
-    const month = dateObj.getUTCMonth() + 1; //months from 1-12
-    const day = dateObj.getUTCDate();
-    const year = dateObj.getUTCFullYear();
-
-    const newdate = year + "/" + month + "/" + day;
-    return newdate;
-  }
-
-  _getToDate() {
-    const dateObj = new Date();
-    const month = dateObj.getUTCMonth() + 1; //months from 1-12
-    const day = dateObj.getUTCDate();
-    const year = dateObj.getUTCFullYear();
-
-    const newdate = year + "/" + month + "/" + day;
-    return newdate;
-  }
-
   search(keyword) {
-    return fetch(`${this._url}${this._endpoint}?q=${keyword}&from=${this._getFromDate()}&to=${this._getToDate()}&pageSize=${pageSize}&apiKey=${apiKey}`, {
+    return fetch(`${this._url}${this._endpoint}?q=${keyword}&from=${new Date(Date.now() - 604800000)}&to=${new Date(Date.now())}&pageSize=${pageSize}&apiKey=${apiKey}`, {
       headers: this._auth
     })
       .then((res) => {
