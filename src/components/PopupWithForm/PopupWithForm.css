@@ -76,6 +76,10 @@
   font: 400 14px/17px 'Inter';
 }
 
+.form__input_disabled {
+  background-color: #b6b6b6;
+}
+
 .form__input:focus {
   box-shadow: 0 0 5px #2F71E5;
   border: 1px solid #2F71E5;

@@ -1,19 +1,30 @@
-## News-Explorer project FRONTEND HTML/CSS
+## News-Explorer project REACT.JS FUNCTIONALITY
 
 Bootstrapped with Create-React-App
 
 A few notes:
 
-* There's a little bit of ReactJS logic, exclusively for conditional rendering and toggling modals. Not functional.
-* Validation is working but not perfect. Haven't figured out how to do conditional onChange handling.
-* Working on simplifying the styles. Learned some new tips and tricks, so that's fun.
+* Everything seems to be working. Depending on the speed of the api, sometimes the redirects are kind of funky
+* Code is logically organized, but currently still pretty messy.
+* Couldn't get the redirect to work with the useHistory hook, so I used the useLocation hook instead.
+* Created a crash function as part of the App.js, in case the api server fails.
 
-Draft 2!
+Draft 2:
 
-* Miscellaneous markup fixes, including navigation bar spacing, mobile menu changes, etc
-* Forgot to add preloader. Preloader and Nothing Found blocks can now be viewed by clicking the "Search" button. There is currently a 3 second timeout trigger.
-* Fixed popup opening/closing issues when using the navbar. 
-* Inputs now highlight when in focus.
-* Fixed button interactive styles.
+* In case you were wondering, git checkout . erases all unstaged changes. RIP the first time I wrote all this code. Luckily, it goes much faster when you know the problems you need to solve. I've since installed a local backup extension separate from git. Lesson learned.
+* Moved all api calls to app.js
+* Moved all constants and config data to a constants.js folder inside the utils folder.
+* Accidentally broke my first API key after the page got stuck in a loop and sent too many requests. New key has been added.
+* Added new localStorage functions to hold the last search.
+* Updated JWT login/logout so the error doesn't appear on initial page load.
+* Updated date in the NewsApi requests to send timestamps rather than date objects.
+* Added delete handler for the Main component.
+* Added styles and functionality for input disabling.
+* Elevated popup handlers for cleaner popup triggers.
+* Moved location hook functionality to the history hook instead.
+* Updated SearchForm to actually put the cards in the proper format before trying to match them to the NewsApi cards, lol.
+* Removed validator.js and updated to use regular expressions instead.
 
 ### Enjoy!
+
+### Website is here: http://danny-news-explorer.students.nomoreparties.site
