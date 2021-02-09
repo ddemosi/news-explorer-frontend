@@ -8,7 +8,7 @@ const Footer = () => {
   return (
     <footer className="footer">
       <div className="footer__width">
-        <p className="footer__copyright">&copy; Danny Demosi, Powered by News API</p>
+        <p className="footer__copyright">&copy; Danny Gummow, Powered by News API</p>
         <nav className="footer__navbar">
           <div className="footer__navlink-container">
             <Link to='/' className="footer__navlink">Home</Link>

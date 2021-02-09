@@ -1,30 +1,42 @@
-## News-Explorer project REACT.JS FUNCTIONALITY
+# The News Explorer!
+> A portfolio project featuring data from newsapi.org, a custom built express server, and a frontend interface built with React.js
 
-Bootstrapped with Create-React-App
+Visit the live site [here](http://danny-around-react.students.nomoreparties.site)
 
-A few notes:
+This application features token-based authentication, data from the popular API-as-a-service "newsapi.org", and private data storage on a custom built ExpressJS server (view the repository [here](https://github.com/ddemosi/news-explorer-api)). It also features a "sorting" method that will analyze the cards you've searched/saved into your account and rank them based on the most popular keywords. You can view this feature after signing up and saving some news articles into your account. 
 
-* Everything seems to be working. Depending on the speed of the api, sometimes the redirects are kind of funky
-* Code is logically organized, but currently still pretty messy.
-* Couldn't get the redirect to work with the useHistory hook, so I used the useLocation hook instead.
-* Created a crash function as part of the App.js, in case the api server fails.
+<img src="./news-dashboard.PNG" alt="Dashboard UI"/>
 
-Draft 2:
+It also features responsive design easily used on mobile devices.
 
-* In case you were wondering, git checkout . erases all unstaged changes. RIP the first time I wrote all this code. Luckily, it goes much faster when you know the problems you need to solve. I've since installed a local backup extension separate from git. Lesson learned.
-* Moved all api calls to app.js
-* Moved all constants and config data to a constants.js folder inside the utils folder.
-* Accidentally broke my first API key after the page got stuck in a loop and sent too many requests. New key has been added.
-* Added new localStorage functions to hold the last search.
-* Updated JWT login/logout so the error doesn't appear on initial page load.
-* Updated date in the NewsApi requests to send timestamps rather than date objects.
-* Added delete handler for the Main component.
-* Added styles and functionality for input disabling.
-* Elevated popup handlers for cleaner popup triggers.
-* Moved location hook functionality to the history hook instead.
-* Updated SearchForm to actually put the cards in the proper format before trying to match them to the NewsApi cards, lol.
-* Removed validator.js and updated to use regular expressions instead.
+Mobile:
 
-### Enjoy!
+<img src="./news-mobile.PNG" alt="Mobile UI" width="250"/>
 
-### Website is here: http://danny-news-explorer.students.nomoreparties.site
+
+## Installation
+
+After clone, make sure you have node.js installed. Run:
+
+```sh
+npm install
+```
+
+Then run:
+
+```sh
+npm run start
+```
+
+
+## NOTE:
+
+DO NOT REGISTER USING ANY SENSITIVE DATA
+
+This is a portfolio project built for demonstration purposes only and is NOT secured. By default, the server allows all requests from localhost:3000, so anyone with an active development server can access it.
+
+## Meta
+
+Daniel Gummow (dannydemosi) – [LinkedIn](https://www.linkedin.com/in/daniel-gummow-223043186/) – rdgummow@gmail.com
+
+[Github](https://github.com/ddemosi/)
